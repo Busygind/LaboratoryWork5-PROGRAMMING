@@ -52,15 +52,15 @@ public class CommandListener {
 
     @Command(name = "add",
             args = "name, coordX, coordY, age, wingspan, color, character, caveDepth, caveNumberOfTreasures",
-            countOfArgs = Dragon.COUNT_OF_ARGS,
+            countOfArgs = 3,
             desc = "Вывести информацию о коллекции",
             aliases = {})
-    private void add(String dragonName, String x, String y, String age, String wingspan,
-                     String color, String character, String depth, String numOfTreasures) {
+    private void add(String dragonName, String age, String wingspan) {
+
         String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
-        Dragon dragon = Dragon.createInstance(name, Coordinates.createInstance(Integer.parseInt(x), Float.parseFloat(y)), Integer.parseInt(age),
-                                Integer.parseInt(wingspan), Color.valueOf(color.toUpperCase()), DragonCharacter.valueOf(character.toUpperCase()),
-                                DragonCave.createInstance(Double.parseDouble(depth), Integer.parseInt(numOfTreasures)));
+        Dragon dragon = Dragon.createInstance(name, Coordinates.createInstance(inputX(), inputY()), Integer.parseInt(age),
+                                Integer.parseInt(wingspan), inputColor(), inputCharacter(),
+                                DragonCave.createInstance(inputDepth(), inputNumOfTreasures()));
         if (dragon != null) {
             collection.addDragon(dragon);
         }
@@ -115,6 +115,83 @@ public class CommandListener {
             aliases = {})
     private void show() {
         System.out.println(collection.getDragons());
+    }
+
+    private Integer inputX() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите координату x (целое число): ");
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputX();
+        }
+        return null;
+    }
+
+    private Float inputY() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите координату y (число с плавающей точкой): ");
+        try {
+            return Float.parseFloat(scanner.nextLine());
+        } catch (NumberFormatException | NullPointerException e) {
+            System.out.println("Ошибка ввода");
+            inputY();
+        }
+
+        return null; // вообще костыль, но до сюда программа никогда не дойдет
+    }
+
+    private Color inputColor() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите цвет дракона, доступные цвета: " + Arrays.toString(Color.values()) + ", для драконов с неопознанным цветом используйте null: ");
+        String inputString = scanner.nextLine().toUpperCase();
+        if (inputString.equals("NULL")) {
+            return null;
+        }
+        try {
+            return Color.valueOf(inputString);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка ввода, такого цвета не существует");
+            inputColor();
+        }
+        return null;
+    }
+
+    private DragonCharacter inputCharacter() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите настроение дракона, доступные настроения: " + Arrays.toString(DragonCharacter.values()) + ": ");
+        try {
+            return DragonCharacter.valueOf(scanner.nextLine().toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка ввода, такого настроения не существует");
+            inputColor();
+        }
+        return null;
+    }
+
+    private Double inputDepth() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
+        try {
+            return Double.parseDouble(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputDepth();
+        }
+        return null;
+    }
+
+    private Integer inputNumOfTreasures() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите количество сокровищ (целое число, большее 0): ");
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputNumOfTreasures();
+        }
+        return null;
     }
 
     public void commandsReader() throws InvocationTargetException, IllegalAccessException {
