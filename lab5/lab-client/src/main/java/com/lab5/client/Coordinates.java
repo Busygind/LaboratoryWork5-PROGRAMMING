@@ -10,10 +10,6 @@ public class Coordinates {
         this.y = y;
     }
 
-    public Coordinates() {
-
-    }
-
     public static Coordinates createInstance(Integer x, float y) {
         if (x <= MAX_X_VALUE) {
             return new Coordinates(x, y);
