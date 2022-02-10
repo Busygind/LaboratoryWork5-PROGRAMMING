@@ -1,0 +1,14 @@
+System.out.println(parser.read(file));
+//        parser.parseFile(file, collection);
+//        utility.addNewDragon(collection);
+//        for (Dragon elems : collection.getDragons()) {
+//            if (elems.getName() != null) {
+//                System.out.println(elems.getName());
+//            }
+//        }
+//        for (Dragon elem : collection.getDragons()) {
+//            System.out.println(elem);
+////            if (elem.getCoordinates() != null && elem.getCave() != null) {
+////                System.out.println(elem.toString());
+////            }
+//        }

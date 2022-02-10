@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <directory url="file://$PROJECT_DIR$/prog-archetype-master/src/main/resources/archetype-resources" includeSubdirectories="true" />
+    </excludeFromCompile>
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lab-parent-archetype" />
+        <module name="lab-client" />
+        <module name="lab-server" />
+        <module name="lab-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="lab-client" target="8" />
+      <module name="lab-common" target="8" />
+      <module name="lab-parent-archetype" target="1.5" />
+      <module name="lab-server" target="8" />
+      <module name="lab5" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
