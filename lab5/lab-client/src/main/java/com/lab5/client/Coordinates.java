@@ -1,7 +1,7 @@
 package com.lab5.client;
 
 public class Coordinates {
-    final static int MAX_X_VALUE = 603;
+    static final int MAX_X_VALUE = 603;
     private Integer x; //Максимальное значение поля: 603, Поле не может быть null
     private float y;
     //TODO поправить конструктор
