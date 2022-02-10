@@ -56,9 +56,10 @@ public class CommandListener {
             desc = "Вывести информацию о коллекции",
             aliases = {})
     private void add(String dragonName, String age, String wingspan) {
-
+        Integer x = inputX();
+        Float y = inputY();
         String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
-        Dragon dragon = Dragon.createInstance(name, Coordinates.createInstance(inputX(), inputY()), Integer.parseInt(age),
+        Dragon dragon = Dragon.createInstance(name, Coordinates.createInstance(x, y), Integer.parseInt(age),
                                 Integer.parseInt(wingspan), inputColor(), inputCharacter(),
                                 DragonCave.createInstance(inputDepth(), inputNumOfTreasures()));
         if (dragon != null) {
@@ -117,13 +118,18 @@ public class CommandListener {
         System.out.println(collection.getDragons());
     }
 
+    // TODO разобраться почему при вводе неверного х он потом нулл
     private Integer inputX() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите координату x (целое число): ");
         try {
-            return Integer.parseInt(scanner.nextLine());
+            Integer x = Integer.parseInt(scanner.nextLine());
+            if (x > Coordinates.MAX_X_VALUE) { //Проверка х на диапазон
+                throw new NumberFormatException();
+            }
+            return x; //
         } catch (NumberFormatException e) {
-            System.out.println("Ошибка ввода");
+            System.out.println("Число имеет неверный формат или не входит в допустимый диапазон");
             inputX();
         }
         return null;
@@ -165,7 +171,7 @@ public class CommandListener {
             return DragonCharacter.valueOf(scanner.nextLine().toUpperCase());
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка ввода, такого настроения не существует");
-            inputColor();
+            inputCharacter();
         }
         return null;
     }
