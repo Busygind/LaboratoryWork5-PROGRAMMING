@@ -1,0 +1,34 @@
+<set>
+  <dragon>
+    <id>1</id>
+    <name>Dimas</name>
+    <coordinates>
+      <x>1</x>
+      <y>1.0</y>
+    </coordinates>
+    <age>19</age>
+    <wingspan>187</wingspan>
+    <color>YELLOW</color>
+    <character>CHAOTIC_EVIL</character>
+    <cave>
+      <depth>17.1</depth>
+      <numberOfTreasures>2</numberOfTreasures>
+    </cave>
+  </dragon>
+  <dragon>
+    <id>2</id>
+    <name>Serega</name>
+    <coordinates>
+      <x>0</x>
+      <y>0.0</y>
+    </coordinates>
+    <age>18</age>
+    <wingspan>175</wingspan>
+    <color>BLUE</color>
+    <character>CHAOTIC</character>
+    <cave>
+      <depth>15.3</depth>
+      <numberOfTreasures>3</numberOfTreasures>
+    </cave>
+  </dragon>
+</set>
