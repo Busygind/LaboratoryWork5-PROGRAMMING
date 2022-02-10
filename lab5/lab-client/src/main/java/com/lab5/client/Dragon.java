@@ -2,7 +2,10 @@ package com.lab5.client;
 
 import java.util.Date;
 
-public class Dragon {
+public class Dragon implements Comparable<Dragon> {
+
+    public static final int COUNT_OF_ARGS = 9;
+    private static long idCounter = 1;
     private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -12,7 +15,7 @@ public class Dragon {
     private Color color; //Поле может быть null
     private DragonCharacter character; //Поле не может быть null
     private DragonCave cave; //Поле не может быть null
-    public static final int COUNT_OF_ARGS = 9;
+
 
     private Dragon(String name, Coordinates coordinates, int age, int wingspan, Color color, DragonCharacter character, DragonCave cave) {
         try {
@@ -24,6 +27,7 @@ public class Dragon {
             this.character = character;
             this.cave = cave;
             this.creationDate = new Date();
+            setId();
         } catch (IllegalArgumentException ex) {
             System.out.println("Некорректные параметры дракона: " + ex.getMessage());
         }
@@ -41,8 +45,8 @@ public class Dragon {
         return null;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId() {
+        this.id = idCounter++;
     }
 
     public void setName(String name) {
@@ -121,6 +125,15 @@ public class Dragon {
 
     public long getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Dragon o) {
+        int result = age - o.age;
+        if (result == 0) {
+            return name.compareTo(o.name);
+        }
+        return 0;
     }
 
     //TODO придумать реализацию даты
