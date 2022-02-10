@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dragons>
+<set>
     <dragon>
         <name>Serega</name>
         <coordinates>
@@ -30,4 +30,4 @@
             <numberOfTreasures>2</numberOfTreasures>
         </cave>
     </dragon>
-</dragons>
+</set>
