@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class CommandListener {
-    //TODO чекнуть реализацию у Сереги с collection
     private static Map<String, Method> commands = new HashMap<>();
     private CollectionOfDragons collection;
 
@@ -58,8 +57,8 @@ public class CommandListener {
             aliases = {})
     private void add(String dragonName, String x, String y, String age, String wingspan,
                      String color, String character, String depth, String numOfTreasures) {
-        dragonName = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
-        Dragon dragon = Dragon.createInstance(dragonName, Coordinates.createInstance(Integer.parseInt(x), Float.parseFloat(y)), Integer.parseInt(age),
+        String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
+        Dragon dragon = Dragon.createInstance(name, Coordinates.createInstance(Integer.parseInt(x), Float.parseFloat(y)), Integer.parseInt(age),
                                 Integer.parseInt(wingspan), Color.valueOf(color.toUpperCase()), DragonCharacter.valueOf(character.toUpperCase()),
                                 DragonCave.createInstance(Double.parseDouble(depth), Integer.parseInt(numOfTreasures)));
         if (dragon != null) {
