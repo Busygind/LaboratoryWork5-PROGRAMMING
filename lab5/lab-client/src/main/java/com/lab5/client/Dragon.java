@@ -12,10 +12,7 @@ public class Dragon {
     private Color color; //Поле может быть null
     private DragonCharacter character; //Поле не может быть null
     private DragonCave cave; //Поле не может быть null
-
-    public Dragon() {
-
-    }
+    public static final int COUNT_OF_ARGS = 9;
 
     private Dragon(String name, Coordinates coordinates, int age, int wingspan, Color color, DragonCharacter character, DragonCave cave) {
         try {
@@ -32,8 +29,12 @@ public class Dragon {
         }
     }
 
+    public Dragon() {
+        this.creationDate = new Date();
+    }
+
     public static Dragon createInstance(String name, Coordinates coordinates, int age, int wingspan, Color color, DragonCharacter character, DragonCave cave) {
-        if (name != null && !name.isEmpty() && coordinates != null && age > 0 && wingspan > 0 && color != null && character != null && cave != null) {
+        if (name != null && !name.isEmpty() && coordinates != null && age > 0 && wingspan > 0 && character != null && cave != null) {
             return new Dragon(name, coordinates, age, wingspan, color, character, cave);
         }
         System.out.println("Создание дракона не удалось");
@@ -118,11 +119,15 @@ public class Dragon {
         return this.cave;
     }
 
+    public long getId() {
+        return id;
+    }
+
     //TODO придумать реализацию даты
     @Override
     public String toString() {
-        return "\nDragon #" + Long.toString(id) + "\nname: " + name
-                + "\nage: " + Integer.toString(age) + "\nwingspan: " + Integer.toString(wingspan)
+        return "\nDragon #" + id + "\nname: " + name
+                + "\nage: " + age + "\nwingspan: " + wingspan
                 + "\ncoordinates: " + coordinates.toString() + "\ncolor: " + color
                 + "\ncharacter: " + character + "\ncave: " + cave.toString() + "\n========================";
     }
