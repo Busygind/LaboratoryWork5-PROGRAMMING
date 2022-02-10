@@ -1,5 +1,6 @@
 package com.lab5.client;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -11,7 +12,6 @@ public class CommandListener {
     //TODO чекнуть реализацию у Сереги с collection
     private static Map<String, Method> commands = new HashMap<>();
     private CollectionOfDragons collection;
-    private UserUtilities utility = new UserUtilities();
 
     public CommandListener(CollectionOfDragons collection) {
         this.collection = collection;
@@ -53,7 +53,7 @@ public class CommandListener {
 
     @Command(name = "add",
             args = "name, coordX, coordY, age, wingspan, color, character, caveDepth, caveNumberOfTreasures",
-            countOfArgs = 9,
+            countOfArgs = Dragon.COUNT_OF_ARGS,
             desc = "Вывести информацию о коллекции",
             aliases = {})
     private void add(String dragonName, String x, String y, String age, String wingspan,
@@ -61,10 +61,19 @@ public class CommandListener {
         dragonName = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
         Dragon dragon = Dragon.createInstance(dragonName, Coordinates.createInstance(Integer.parseInt(x), Float.parseFloat(y)), Integer.parseInt(age),
                                 Integer.parseInt(wingspan), Color.valueOf(color.toUpperCase()), DragonCharacter.valueOf(character.toUpperCase()),
-                                new DragonCave(Double.parseDouble(depth), Integer.parseInt(numOfTreasures)));
+                                DragonCave.createInstance(Double.parseDouble(depth), Integer.parseInt(numOfTreasures)));
         if (dragon != null) {
             collection.addDragon(dragon);
         }
+    }
+
+    @Command(name = "remove_by_id",
+            args = "id",
+            countOfArgs = 1,
+            desc = "Вывести информацию о коллекции",
+            aliases = {})
+    private void removeById(String id) {
+        collection.removeById(Long.parseLong(id));
     }
 
     @Command(name = "exit",
@@ -88,6 +97,16 @@ public class CommandListener {
         } else {
             System.out.println("Something went wrong, try again.");
         }
+    }
+
+    @Command(name = "save",
+            args = "",
+            countOfArgs = 0,
+            desc = "Сохранение коллекции в файл",
+            aliases = {})
+    private void save() throws IOException {
+        XMLParser writer = new XMLParser();
+        writer.write(collection.getFile(), collection);
     }
 
     @Command(name = "show",
