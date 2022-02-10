@@ -3,7 +3,6 @@ package com.lab5.client;
 public class DragonCave {
     private double depth;
     private int numberOfTreasures; //Значение поля должно быть больше 0
-    //TODO поправить конструктор
 
     private DragonCave(double depth, int numberOfTreasures) {
         if (numberOfTreasures <= 0) {
