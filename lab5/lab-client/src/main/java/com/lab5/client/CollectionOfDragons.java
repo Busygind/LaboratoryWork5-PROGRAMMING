@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 public class CollectionOfDragons {
     private static int idCounter = 1;
@@ -21,7 +20,7 @@ public class CollectionOfDragons {
     }
 
     public void addDragon(Dragon dragon) {
-        dragon.setId(); //айди дракона зависит от текущего количества драконов
+        dragon.setId();
         idCounter++;
         dragons.add(dragon);
     }
