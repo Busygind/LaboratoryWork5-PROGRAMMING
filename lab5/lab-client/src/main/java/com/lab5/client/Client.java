@@ -10,6 +10,8 @@ public final class Client {
         throw new UnsupportedOperationException("This is an utility class and can not be instantiated");
     }
 
+    // TODO сделать javadoc
+    // TODO реализовать обработку неверных команд пользователя
     public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
         XMLParser parser = new XMLParser();
         FileInputStream inputFile = new FileInputStream("C:\\Users\\Дмитрий\\JavaProjects\\LaboratoryWork5\\lab5\\lab-client\\src\\main\\Dragons.xml");
