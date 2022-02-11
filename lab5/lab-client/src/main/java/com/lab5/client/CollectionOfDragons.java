@@ -1,20 +1,17 @@
 package com.lab5.client;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.HashSet;
 
 public class CollectionOfDragons {
     private static int idCounter = 1;
-    private FileInputStream inFile;
     private FileOutputStream outFile;
     private HashSet<Dragon> dragons;
     private Date creationDate;
 
-    public CollectionOfDragons(FileOutputStream outFile, FileInputStream inFile) {
+    public CollectionOfDragons(FileOutputStream outFile) {
         this.outFile = outFile;
-        this.inFile = inFile;
         dragons = new HashSet<>();
         creationDate = new Date();
     }
@@ -23,6 +20,7 @@ public class CollectionOfDragons {
         dragon.setId();
         idCounter++;
         dragons.add(dragon);
+        System.out.println("Дракон успешно добавлен в коллекцию");
     }
 
     public void clear() {
