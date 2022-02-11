@@ -26,9 +26,9 @@ public class XMLParser {
     public void write(FileOutputStream file, CollectionOfDragons dragons) throws IOException {
         XStream xStream = new XStream();
         xStream.alias("dragon", Dragon.class);
-        xStream.alias("dragons", CollectionOfDragons.class);
+        xStream.alias("set", CollectionOfDragons.class);
         xStream.addImplicitCollection(CollectionOfDragons.class, "dragons");
-        String xmlText = xStream.toXML(dragons.getDragons());
+        String xmlText = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n" + xStream.toXML(dragons.getDragons());
         file.write(xmlText.getBytes(StandardCharsets.UTF_8));
     }
 }
