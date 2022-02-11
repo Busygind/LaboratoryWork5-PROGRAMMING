@@ -58,10 +58,30 @@ public class CommandListener {
     private void add(String dragonName, String age, String wingspan) {
         String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
         Dragon dragon = Dragon.createInstance(name, inputCoordinates(), Integer.parseInt(age),
-                                Integer.parseInt(wingspan), inputColor(), inputCharacter(),
-                                DragonCave.createInstance(inputDepth(), inputNumOfTreasures()));
+                                Integer.parseInt(wingspan), inputColor(), inputCharacter(), inputCave());
         if (dragon != null) {
             collection.addDragon(dragon);
+        }
+    }
+
+    @Command(name = "update",
+            args = "{id}",
+            countOfArgs = 1,
+            desc = "Обновить данные о элементе коллекции по данному id",
+            aliases = {})
+    private void update(String id) {
+        long newId = Long.parseLong(id);
+        for (Dragon elem : collection.getDragons()) {
+            if (elem.getId() == newId) {
+                System.out.println("Введите информацию о драконе: {name, age, wingspan}");
+                Scanner sc = new Scanner(System.in);
+                inputPrimitives(elem);
+                elem.setCoordinates(inputCoordinates());
+                elem.setColor(inputColor());
+                elem.setCharacter(inputCharacter());
+                elem.setCave(inputCave());
+                System.out.println("Данные о драконе успешно обновлены");
+            }
         }
     }
 
@@ -117,6 +137,27 @@ public class CommandListener {
         System.out.println(collection.getDragons());
     }
 
+    private void inputPrimitives(Dragon dragon) {
+        Scanner scanner = new Scanner(System.in);
+        String[] inputArray = scanner.nextLine().split(" ");
+        try {
+            dragon.setName(inputArray[0]);
+            dragon.setAge(Integer.parseInt(inputArray[1]));
+            dragon.setWingspan(Integer.parseInt(inputArray[2]));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Введены некорректные данные, верный формат: name age[>0] wingspan[>0]");
+            inputPrimitives(dragon);
+        }
+    }
+
+    private Coordinates inputCoordinates() {
+        System.out.println("Введите координаты:");
+        Coordinates newCoordinates = new Coordinates();
+        inputX(newCoordinates);
+        inputY(newCoordinates);
+        return newCoordinates;
+    }
+
     // TODO разобраться почему при вводе неверного х он потом нулл
     private void inputX(Coordinates coordinates) {
         Scanner scanner = new Scanner(System.in);
@@ -143,12 +184,35 @@ public class CommandListener {
         }
     }
 
-    private Coordinates inputCoordinates() {
-        System.out.println("Введите координаты:");
-        Coordinates newCoordinates = new Coordinates();
-        inputX(newCoordinates);
-        inputY(newCoordinates);
-        return newCoordinates;
+    private DragonCave inputCave() {
+        System.out.println("Введите данные о пещере:");
+        DragonCave cave = new DragonCave();
+        inputDepth(cave);
+        inputNumOfTreasures(cave);
+        return cave;
+    }
+
+    //TODO переделать по примеру координат
+    private void inputDepth(DragonCave cave) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
+        try {
+            cave.setDepth(Double.parseDouble(scanner.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputDepth(cave);
+        }
+    }
+
+    private void inputNumOfTreasures(DragonCave cave) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите количество сокровищ (целое число, большее 0): ");
+        try {
+            cave.setNumberOfTreasures(Integer.parseInt(scanner.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputNumOfTreasures(cave);
+        }
     }
 
     private Color inputColor() {
@@ -171,7 +235,7 @@ public class CommandListener {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите настроение дракона, доступные настроения: " + Arrays.toString(DragonCharacter.values()) + ": ");
         try {
-            return DragonCharacter.valueOf(scanner.nextLine().toUpperCase());
+             return DragonCharacter.valueOf(scanner.nextLine().toUpperCase());
         } catch (IllegalArgumentException e) {
             System.out.println("Ошибка ввода, такого настроения не существует");
             inputCharacter();
@@ -179,33 +243,8 @@ public class CommandListener {
         return null;
     }
 
-    //TODO переделать по примеру координат
-    private Double inputDepth() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
-        try {
-            return Double.parseDouble(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка ввода");
-            inputDepth();
-        }
-        return null;
-    }
-
-    private Integer inputNumOfTreasures() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите количество сокровищ (целое число, большее 0): ");
-        try {
-            return Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка ввода");
-            inputNumOfTreasures();
-        }
-        return null;
-    }
-
     public void commandsReader() throws InvocationTargetException, IllegalAccessException {
-        while (true) {
+        while (true) { // цикл завершится только при вызове команды exit
             Scanner scanner = new Scanner(System.in);
             String line = scanner.nextLine().toLowerCase();
             String[] inputLine = line.split(" ");
@@ -220,6 +259,5 @@ public class CommandListener {
                 method.invoke(this, commandArgs);
             }
         }
-
     }
 }
