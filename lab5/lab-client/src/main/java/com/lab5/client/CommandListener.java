@@ -51,15 +51,13 @@ public class CommandListener {
     }
 
     @Command(name = "add",
-            args = "name, coordX, coordY, age, wingspan, color, character, caveDepth, caveNumberOfTreasures",
-            countOfArgs = 3,
-            desc = "Вывести информацию о коллекции",
+            args = "{name age wingspan}",
+            countOfArgs = Dragon.COUNT_OF_PRIMITIVE_ARGS,
+            desc = "Добавить элемент в коллекцию",
             aliases = {})
     private void add(String dragonName, String age, String wingspan) {
-        Integer x = inputX();
-        Float y = inputY();
         String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
-        Dragon dragon = Dragon.createInstance(name, Coordinates.createInstance(x, y), Integer.parseInt(age),
+        Dragon dragon = Dragon.createInstance(name, inputCoordinates(), Integer.parseInt(age),
                                 Integer.parseInt(wingspan), inputColor(), inputCharacter(),
                                 DragonCave.createInstance(inputDepth(), inputNumOfTreasures()));
         if (dragon != null) {
@@ -68,9 +66,9 @@ public class CommandListener {
     }
 
     @Command(name = "remove_by_id",
-            args = "id",
+            args = "{id}",
             countOfArgs = 1,
-            desc = "Вывести информацию о коллекции",
+            desc = "Удалить элемент из коллекции по его ID",
             aliases = {})
     private void removeById(String id) {
         collection.removeById(Long.parseLong(id));
@@ -107,6 +105,7 @@ public class CommandListener {
     private void save() throws IOException {
         XMLParser writer = new XMLParser();
         writer.write(collection.getFile(), collection);
+        System.out.println("Дракон успешно сохранен в коллекцию");
     }
 
     @Command(name = "show",
@@ -119,33 +118,37 @@ public class CommandListener {
     }
 
     // TODO разобраться почему при вводе неверного х он потом нулл
-    private Integer inputX() {
+    private void inputX(Coordinates coordinates) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите координату x (целое число): ");
         try {
-            Integer x = Integer.parseInt(scanner.nextLine());
-            if (x > Coordinates.MAX_X_VALUE) { //Проверка х на диапазон
-                throw new NumberFormatException();
-            }
-            return x; //
+            coordinates.setX(Integer.parseInt(scanner.nextLine()));
         } catch (NumberFormatException e) {
-            System.out.println("Число имеет неверный формат или не входит в допустимый диапазон");
-            inputX();
+            System.out.println("Число имеет неверный формат");
+            inputX(coordinates);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Число не входит в допустимый диапазон");
+            inputX(coordinates);
         }
-        return null;
     }
 
-    private Float inputY() {
+    private void inputY(Coordinates coordinates) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите координату y (число с плавающей точкой): ");
+        System.out.print("Введите Y(число с плавающей точкой): ");
         try {
-            return Float.parseFloat(scanner.nextLine());
-        } catch (NumberFormatException | NullPointerException e) {
+            coordinates.setY(Float.parseFloat(scanner.nextLine()));
+        } catch (NumberFormatException e) {
             System.out.println("Ошибка ввода");
-            inputY();
+            inputY(coordinates);
         }
+    }
 
-        return null; // вообще костыль, но до сюда программа никогда не дойдет
+    private Coordinates inputCoordinates() {
+        System.out.println("Введите координаты:");
+        Coordinates newCoordinates = new Coordinates();
+        inputX(newCoordinates);
+        inputY(newCoordinates);
+        return newCoordinates;
     }
 
     private Color inputColor() {
@@ -176,6 +179,7 @@ public class CommandListener {
         return null;
     }
 
+    //TODO переделать по примеру координат
     private Double inputDepth() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
