@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Dragon implements Comparable<Dragon> {
 
-    public static final int COUNT_OF_ARGS = 9;
+    public static final int COUNT_OF_PRIMITIVE_ARGS = 3;
     private static long idCounter = 1;
     private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -127,6 +127,14 @@ public class Dragon implements Comparable<Dragon> {
         return id;
     }
 
+    public void setCreationDate() {
+        this.creationDate = new Date();
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
     @Override
     public int compareTo(Dragon o) {
         int result = age - o.age;
@@ -136,10 +144,11 @@ public class Dragon implements Comparable<Dragon> {
         return 0;
     }
 
-    //TODO придумать реализацию даты
+    //TODO придумать реализацию даты (пофиксить то что она null)
     @Override
     public String toString() {
         return "\nDragon #" + id + "\nname: " + name
+                + "\ncreationDate: " + getCreationDate()
                 + "\nage: " + age + "\nwingspan: " + wingspan
                 + "\ncoordinates: " + coordinates.toString() + "\ncolor: " + color
                 + "\ncharacter: " + character + "\ncave: " + cave.toString() + "\n========================";
