@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * @author Dmitry Busygin
+ */
 public class CommandListener {
     private static Map<String, Method> commands = new HashMap<>();
     private CollectionOfDragons collection;
@@ -137,6 +140,9 @@ public class CommandListener {
         System.out.println(collection.getDragons());
     }
 
+    /**
+     * @param dragon дракон, характеристики примитивных типов которого вводит пользователь
+     */
     private void inputPrimitives(Dragon dragon) {
         Scanner scanner = new Scanner(System.in);
         String[] inputArray = scanner.nextLine().split(" ");
@@ -150,6 +156,9 @@ public class CommandListener {
         }
     }
 
+    /**
+     * @return объект координат, данные которых ввёл пользователь
+     */
     private Coordinates inputCoordinates() {
         System.out.println("Введите координаты:");
         Coordinates newCoordinates = new Coordinates();
@@ -158,7 +167,9 @@ public class CommandListener {
         return newCoordinates;
     }
 
-    // TODO разобраться почему при вводе неверного х он потом нулл
+    /**
+     * @param coordinates объект координат, х которых вводит пользователь
+     */
     private void inputX(Coordinates coordinates) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите координату x (целое число): ");
@@ -173,6 +184,9 @@ public class CommandListener {
         }
     }
 
+    /**
+     * @param coordinates объект координат, у которых вводит пользователь
+     */
     private void inputY(Coordinates coordinates) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите Y(число с плавающей точкой): ");
@@ -184,6 +198,9 @@ public class CommandListener {
         }
     }
 
+    /**
+     * @return пещера, данные о которой ввёл пользователь
+     */
     private DragonCave inputCave() {
         System.out.println("Введите данные о пещере:");
         DragonCave cave = new DragonCave();
@@ -192,7 +209,9 @@ public class CommandListener {
         return cave;
     }
 
-    //TODO переделать по примеру координат
+    /**
+     * @param cave пещера, глубину которой вводит пользователь
+     */
     private void inputDepth(DragonCave cave) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
@@ -204,6 +223,9 @@ public class CommandListener {
         }
     }
 
+    /**
+     * @param cave пещера, количество сокровищ в которой вводит пользователь
+     */
     private void inputNumOfTreasures(DragonCave cave) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите количество сокровищ (целое число, большее 0): ");
@@ -215,11 +237,14 @@ public class CommandListener {
         }
     }
 
+    /**
+     * @return обработанный объект цвета дракона, полученный от пользователя
+     */
     private Color inputColor() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите цвет дракона, доступные цвета: " + Arrays.toString(Color.values()) + ", для драконов с неопознанным цветом используйте null: ");
         String inputString = scanner.nextLine().toUpperCase();
-        if (inputString.equals("NULL")) {
+        if ("NULL".equals(inputString)) {
             return null;
         }
         try {
@@ -231,6 +256,9 @@ public class CommandListener {
         return null;
     }
 
+    /**
+     * @return обработанный объект характера дракона, полученный от пользователя
+     */
     private DragonCharacter inputCharacter() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите настроение дракона, доступные настроения: " + Arrays.toString(DragonCharacter.values()) + ": ");
@@ -243,6 +271,10 @@ public class CommandListener {
         return null;
     }
 
+    /**
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public void commandsReader() throws InvocationTargetException, IllegalAccessException {
         while (true) { // цикл завершится только при вызове команды exit
             Scanner scanner = new Scanner(System.in);
