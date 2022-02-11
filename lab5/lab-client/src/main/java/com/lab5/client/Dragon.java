@@ -91,9 +91,6 @@ public class Dragon implements Comparable<Dragon> {
     }
 
     public void setColor(Color color) {
-        if (color == null) {
-            throw new IllegalArgumentException("Не передан цвет дракона, попробуйте снова");
-        }
         this.color = color;
     }
 
