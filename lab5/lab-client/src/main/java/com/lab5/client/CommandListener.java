@@ -3,16 +3,15 @@ package com.lab5.client;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Dmitry Busygin
  */
 public class CommandListener {
     private static Map<String, Method> commands = new HashMap<>();
+    private ArgumentsListener argumentsListener = new ArgumentsListener();
+    private List<String> commandHistory = new ArrayList<>();
     private CollectionOfDragons collection;
 
     public CommandListener(CollectionOfDragons collection) {
@@ -53,6 +52,15 @@ public class CommandListener {
         collection.showInfo();
     }
 
+    @Command(name = "show",
+            args = "",
+            countOfArgs = 0,
+            desc = "Показать всех драконов в коллекции",
+            aliases = {})
+    private void show() {
+        System.out.println(collection.getDragons());
+    }
+
     @Command(name = "add",
             args = "{name age wingspan}",
             countOfArgs = Dragon.COUNT_OF_PRIMITIVE_ARGS,
@@ -60,11 +68,16 @@ public class CommandListener {
             aliases = {})
     private void add(String dragonName, String age, String wingspan) {
         String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
-        Dragon dragon = Dragon.createInstance(name, inputCoordinates(), Integer.parseInt(age),
-                                Integer.parseInt(wingspan), inputColor(), inputCharacter(), inputCave());
-        if (dragon != null) {
-            collection.addDragon(dragon);
-        }
+        Dragon dragon = new Dragon();
+        //TODO решить как проверять примитивы
+        dragon.setName(name);
+        dragon.setAge(Integer.parseInt(age));
+        dragon.setWingspan(Integer.parseInt(wingspan));
+        dragon.setCoordinates(argumentsListener.inputCoordinates());
+        argumentsListener.inputColor(dragon);
+        argumentsListener.inputCharacter(dragon);
+        dragon.setCave(argumentsListener.inputCave());
+        collection.addDragon(dragon);
     }
 
     @Command(name = "update",
@@ -78,11 +91,11 @@ public class CommandListener {
             if (elem.getId() == newId) {
                 System.out.println("Введите информацию о драконе: {name, age, wingspan}");
                 Scanner sc = new Scanner(System.in);
-                inputPrimitives(elem);
-                elem.setCoordinates(inputCoordinates());
-                elem.setColor(inputColor());
-                elem.setCharacter(inputCharacter());
-                elem.setCave(inputCave());
+                argumentsListener.inputPrimitives(elem);
+                elem.setCoordinates(argumentsListener.inputCoordinates());
+                argumentsListener.inputColor(elem);
+                argumentsListener.inputCharacter(elem);
+                elem.setCave(argumentsListener.inputCave());
                 System.out.println("Данные о драконе успешно обновлены");
             }
         }
@@ -95,15 +108,6 @@ public class CommandListener {
             aliases = {})
     private void removeById(String id) {
         collection.removeById(Long.parseLong(id));
-    }
-
-    @Command(name = "exit",
-            args = "",
-            countOfArgs = 0,
-            desc = "Выход из программы без сохранения",
-            aliases = {})
-    private void exit() {
-        System.exit(0);
     }
 
     @Command(name = "clear",
@@ -131,144 +135,114 @@ public class CommandListener {
         System.out.println("Дракон успешно сохранен в коллекцию");
     }
 
-    @Command(name = "show",
+    @Command(name = "execute_script",
+            args = "{filename}",
+            countOfArgs = 1,
+            desc = "Считать и исполнить скрипт из указанного файла",
+            aliases = {})
+    private void executeScript(String filename) {
+        //TODO РЕАЛИЗОВАТЬ
+    }
+
+    @Command(name = "exit",
             args = "",
             countOfArgs = 0,
-            desc = "Показать всех драконов в коллекции",
+            desc = "Выход из программы без сохранения",
             aliases = {})
-    private void show() {
-        System.out.println(collection.getDragons());
+    private void exit() {
+        System.exit(0);
     }
 
-    /**
-     * @param dragon дракон, характеристики примитивных типов которого вводит пользователь
-     */
-    private void inputPrimitives(Dragon dragon) {
-        Scanner scanner = new Scanner(System.in);
-        String[] inputArray = scanner.nextLine().split(" ");
-        try {
-            dragon.setName(inputArray[0]);
-            dragon.setAge(Integer.parseInt(inputArray[1]));
-            dragon.setWingspan(Integer.parseInt(inputArray[2]));
-        } catch (IllegalArgumentException e) {
-            System.out.println("Введены некорректные данные, верный формат: name age[>0] wingspan[>0]");
-            inputPrimitives(dragon);
+    @Command(name = "add_if_max",
+            args = "{name, age, wingspan}",
+            countOfArgs = Dragon.COUNT_OF_PRIMITIVE_ARGS,
+            desc = "Добавить дракона в коллекцию, если его возраст больше, чем у самого старшего в коллекции",
+            aliases = {})
+    private void addIfMax(String name, String age, String wingspan) {
+        int maxAge = 0;
+        for (Dragon dragon : collection.getDragons()) {
+            if (dragon.getAge() > maxAge) {
+                maxAge = dragon.getAge();
+            }
+        }
+        if (Integer.parseInt(age) > maxAge) {
+            add(name, age, wingspan);
+        } else {
+            System.out.println("В коллекции есть дракон постарше!");
         }
     }
 
-    /**
-     * @return объект координат, данные которых ввёл пользователь
-     */
-    private Coordinates inputCoordinates() {
-        System.out.println("Введите координаты:");
-        Coordinates newCoordinates = new Coordinates();
-        inputX(newCoordinates);
-        inputY(newCoordinates);
-        return newCoordinates;
-    }
-
-    /**
-     * @param coordinates объект координат, х которых вводит пользователь
-     */
-    private void inputX(Coordinates coordinates) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите координату x (целое число): ");
-        try {
-            coordinates.setX(Integer.parseInt(scanner.nextLine()));
-        } catch (NumberFormatException e) {
-            System.out.println("Число имеет неверный формат");
-            inputX(coordinates);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Число не входит в допустимый диапазон");
-            inputX(coordinates);
+    @Command(name = "add_if_min",
+            args = "{name, age, wingspan}",
+            countOfArgs = Dragon.COUNT_OF_PRIMITIVE_ARGS,
+            desc = "Добавить дракона в коллекцию, если его возраст меньше, чем у самого младшего в коллекции",
+            aliases = {})
+    private void addIfMin(String name, String age, String wingspan) {
+        int minAge = Integer.MAX_VALUE;
+        for (Dragon dragon : collection.getDragons()) {
+            if (dragon.getAge() < minAge) {
+                minAge = dragon.getAge();
+            }
+        }
+        if (Integer.parseInt(age) < minAge) {
+            add(name, age, wingspan);
+        } else {
+            System.out.println("В коллекции есть дракон помладше!");
         }
     }
 
-    /**
-     * @param coordinates объект координат, у которых вводит пользователь
-     */
-    private void inputY(Coordinates coordinates) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите Y(число с плавающей точкой): ");
-        try {
-            coordinates.setY(Float.parseFloat(scanner.nextLine()));
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка ввода");
-            inputY(coordinates);
+    @Command(name = "history",
+            args = "",
+            countOfArgs = 0,
+            desc = "Вывести последние 11 команд (без их аргументов)",
+            aliases = {})
+    private void showHistory() {
+        final int COUNT_OF_WATCHABLE_COMMANDS = 11;
+        if (commandHistory.size() > COUNT_OF_WATCHABLE_COMMANDS) {
+            System.out.println(commandHistory.subList(commandHistory.size() - COUNT_OF_WATCHABLE_COMMANDS, commandHistory.size()));
         }
+        System.out.println(commandHistory);
     }
 
-    /**
-     * @return пещера, данные о которой ввёл пользователь
-     */
-    private DragonCave inputCave() {
-        System.out.println("Введите данные о пещере:");
-        DragonCave cave = new DragonCave();
-        inputDepth(cave);
-        inputNumOfTreasures(cave);
-        return cave;
+    @Command(name = "max_by_cave",
+            args = "",
+            countOfArgs = 0,
+            desc = "Вывести любого дракона из коллекции, глубина пещеры которого является максимальной",
+            aliases = {})
+    private void showMaxByCave() {
+        double MAX_DEPTH = Double.MIN_VALUE;
+        Dragon dragonWithDeepestCave = new Dragon();
+        for (Dragon dragon : collection.getDragons()) {
+            if (dragon.getCave().getDepth() > MAX_DEPTH) {
+                MAX_DEPTH = dragon.getCave().getDepth();
+                dragonWithDeepestCave = dragon;
+            }
+        }
+        System.out.println("Данные о драконе с самой глубокой пещерой:\n" + dragonWithDeepestCave);
     }
 
-    /**
-     * @param cave пещера, глубину которой вводит пользователь
-     */
-    private void inputDepth(DragonCave cave) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
-        try {
-            cave.setDepth(Double.parseDouble(scanner.nextLine()));
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка ввода");
-            inputDepth(cave);
-        }
+    @Command(name = "print_ascending",
+            args = "",
+            countOfArgs = 0,
+            desc = "Вывести драконов коллекции от младшего к старшему",
+            aliases = {})
+    private void printAscending() {
+        //TODO РЕАЛИЗОВАТЬ
+        List<Dragon> dragons = new ArrayList<>(collection.getDragons());
+        Collections.sort(dragons);
+        System.out.println(dragons);
     }
 
-    /**
-     * @param cave пещера, количество сокровищ в которой вводит пользователь
-     */
-    private void inputNumOfTreasures(DragonCave cave) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите количество сокровищ (целое число, большее 0): ");
-        try {
-            cave.setNumberOfTreasures(Integer.parseInt(scanner.nextLine()));
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка ввода");
-            inputNumOfTreasures(cave);
-        }
-    }
-
-    /**
-     * @return обработанный объект цвета дракона, полученный от пользователя
-     */
-    private Color inputColor() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите цвет дракона, доступные цвета: " + Arrays.toString(Color.values()) + ", для драконов с неопознанным цветом используйте null: ");
-        String inputString = scanner.nextLine().toUpperCase();
-        if ("NULL".equals(inputString)) {
-            return null;
-        }
-        try {
-            return Color.valueOf(inputString);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ошибка ввода, такого цвета не существует");
-            inputColor();
-        }
-        return null;
-    }
-
-    /**
-     * @return обработанный объект характера дракона, полученный от пользователя
-     */
-    private DragonCharacter inputCharacter() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите настроение дракона, доступные настроения: " + Arrays.toString(DragonCharacter.values()) + ": ");
-        try {
-             return DragonCharacter.valueOf(scanner.nextLine().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ошибка ввода, такого настроения не существует");
-            inputCharacter();
-        }
-        return null;
+    @Command(name = "print_descending",
+            args = "",
+            countOfArgs = 0,
+            desc = "Вывести драконов коллекции от старшего к младшему",
+            aliases = {})
+    private void printDescending() {
+        //TODO РЕАЛИЗОВАТЬ
+        List<Dragon> dragons = new ArrayList<>(collection.getDragons());
+        dragons.sort(Collections.reverseOrder());
+        System.out.println(dragons);
     }
 
     /**
@@ -283,12 +257,16 @@ public class CommandListener {
             String commandName = inputLine[0];
             String[] commandArgs = Arrays.copyOfRange(inputLine, 1, inputLine.length);
             Method method = commands.get(commandName);
-
-            Command command = method.getAnnotation(Command.class);
-            if (commandArgs.length != command.countOfArgs()) {
-                System.out.println("Неверное количество аргументов. Необходимо: " + command.countOfArgs());
-            } else {
-                method.invoke(this, commandArgs);
+            commandHistory.add(commandName);
+            try {
+                Command command = method.getAnnotation(Command.class);
+                if (commandArgs.length != command.countOfArgs()) {
+                    System.out.println("Неверное количество аргументов. Необходимо: " + command.countOfArgs());
+                } else {
+                    method.invoke(this, commandArgs);
+                }
+            } catch (NullPointerException e) {
+                System.out.println("Такой команды не существует. Чтобы посмотреть список доступных команд, напишите help");
             }
         }
     }
