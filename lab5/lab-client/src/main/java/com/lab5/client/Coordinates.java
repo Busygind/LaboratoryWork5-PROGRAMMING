@@ -4,7 +4,7 @@ public class Coordinates {
     static final int MAX_X_VALUE = 603;
     private Integer x; //Максимальное значение поля: 603, Поле не может быть null
     private float y;
-    //TODO поправить конструктор
+
     public Coordinates(Integer x, float y) {
         this.x = x;
         this.y = y;
