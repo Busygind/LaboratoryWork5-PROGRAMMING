@@ -22,7 +22,7 @@ public class XMLParser {
         CollectionOfDragons dragons = (CollectionOfDragons) xStream.fromXML(xmlText);
         return dragons.getDragons();
     }
-    //TODO отдебажить парсинг и проверить что на выходе нормальный сет драконов
+
     public void write(FileOutputStream file, CollectionOfDragons dragons) throws IOException {
         XStream xStream = new XStream();
         xStream.alias("dragon", Dragon.class);
