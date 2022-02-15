@@ -1,0 +1,146 @@
+package com.lab5.client;
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class ArgumentsListener {
+
+    public ArgumentsListener() {
+
+    }
+
+    /**
+     * @param dragon дракон, характеристики примитивных типов которого вводит пользователь
+     */
+    protected void inputPrimitives(Dragon dragon) {
+        Scanner scanner = new Scanner(System.in);
+        String[] inputArray = scanner.nextLine().split(" ");
+        try {
+            dragon.setName(inputArray[0]);
+            dragon.setAge(Integer.parseInt(inputArray[1]));
+            dragon.setWingspan(Integer.parseInt(inputArray[2]));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Введены некорректные данные, верный формат: name age[>0] wingspan[>0]");
+            inputPrimitives(dragon);
+        }
+    }
+
+    /**
+     * @return объект координат, данные которых ввёл пользователь
+     */
+    protected Coordinates inputCoordinates() {
+        System.out.println("Введите координаты:");
+        Coordinates newCoordinates = new Coordinates();
+        inputX(newCoordinates);
+        inputY(newCoordinates);
+        return newCoordinates;
+    }
+
+    /**
+     * @param coordinates объект координат, х которых вводит пользователь
+     */
+    private void inputX(Coordinates coordinates) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите координату x (целое число): ");
+        try {
+            coordinates.setX(Integer.parseInt(scanner.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Число имеет неверный формат");
+            inputX(coordinates);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Число не входит в допустимый диапазон");
+            inputX(coordinates);
+        }
+    }
+
+    /**
+     * @param coordinates объект координат, у которых вводит пользователь
+     */
+    private void inputY(Coordinates coordinates) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите Y(число с плавающей точкой): ");
+        try {
+            coordinates.setY(Float.parseFloat(scanner.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputY(coordinates);
+        }
+    }
+
+    /**
+     * @return пещера, данные о которой ввёл пользователь
+     */
+    protected DragonCave inputCave() {
+        System.out.println("Введите данные о пещере:");
+        DragonCave cave = new DragonCave();
+        inputDepth(cave);
+        inputNumOfTreasures(cave);
+        return cave;
+    }
+
+    /**
+     * @param cave пещера, глубина которой запрашивается у пользователя
+     */
+    private void inputDepth(DragonCave cave) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите глубину пещеры (число с плавающей точкой): ");
+        try {
+            cave.setDepth(Double.parseDouble(scanner.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputDepth(cave);
+        }
+    }
+
+    /**
+     * @param cave пещера, количество сокровищ в которой запрашивается у пользователя
+     */
+    private void inputNumOfTreasures(DragonCave cave) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите количество сокровищ (целое число, большее 0): ");
+        try {
+            cave.setNumberOfTreasures(Integer.parseInt(scanner.nextLine()));
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка ввода");
+            inputNumOfTreasures(cave);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            inputNumOfTreasures(cave);
+        }
+    }
+
+    /**
+     *
+     * @param dragon дракон, цвет которого запрашивается у пользователя
+     */
+    protected void inputColor(Dragon dragon) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите цвет дракона, доступные цвета: " + Arrays.toString(Color.values()) + ", для драконов с неопознанным цветом используйте null: ");
+        String inputString = scanner.nextLine().toUpperCase();
+        if ("NULL".equals(inputString)) {
+            dragon.setColor(null);
+        } else {
+            try {
+                dragon.setColor(Color.valueOf(inputString));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ошибка ввода, такого цвета не существует");
+                inputColor(dragon);
+            }
+        }
+    }
+
+    /**
+     *
+     * @param dragon дракон, характер которого запрашивается у пользователя
+     */
+    protected void inputCharacter(Dragon dragon) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите настроение дракона, доступные настроения: " + Arrays.toString(DragonCharacter.values()) + ": ");
+        try {
+            dragon.setCharacter(DragonCharacter.valueOf(scanner.nextLine().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка ввода, такого настроения не существует");
+            inputCharacter(dragon);
+        }
+    }
+}
