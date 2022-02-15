@@ -15,7 +15,6 @@ public final class Client {
     }
 
     // TODO сделать javadoc
-    // TODO реализовать обработку неверных команд пользователя
 
     /**
      * @throws IOException
