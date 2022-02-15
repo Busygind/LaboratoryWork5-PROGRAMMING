@@ -16,21 +16,13 @@ public class DragonCave {
 
     }
 
-//    public static DragonCave createInstance(double depth, int numberOfTreasures) {
-//        if (numberOfTreasures > 0) {
-//            return new DragonCave(depth, numberOfTreasures);
-//        }
-//        System.out.println("Incorrect cave's number of treasures");
-//        return null;
-//    }
-
     public void setDepth(double depth) {
         this.depth = depth;
     }
 
     public void setNumberOfTreasures(int numberOfTreasures) {
         if (numberOfTreasures <= 0) {
-            throw new IllegalArgumentException("Некорректное количество существ в пещере, попробуйте снова");
+            throw new IllegalArgumentException("Некорректное количество сокровищ в пещере, попробуйте снова");
         }
         this.numberOfTreasures = numberOfTreasures;
     }
