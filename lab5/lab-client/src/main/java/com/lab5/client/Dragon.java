@@ -141,7 +141,6 @@ public class Dragon implements Comparable<Dragon> {
         return 0;
     }
 
-    //TODO придумать реализацию даты (пофиксить то что она null)
     @Override
     public String toString() {
         return "\nDragon #" + id + "\nname: " + name
