@@ -143,4 +143,13 @@ public class ArgumentsListener {
             inputCharacter(dragon);
         }
     }
+
+    public void validatePrimitives(Dragon dragon, String age, String wingspan) {
+//        try {
+//            dragon.setAge(Integer.parseInt(age));
+//            dragon.setWingspan(Integer.parseInt(wingspan));
+//        } catch (NumberFormatException e) {
+//
+//        }
+    }
 }
