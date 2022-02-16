@@ -1,5 +1,6 @@
 package com.lab5.client;
 
+import java.util.Comparator;
 import java.util.Date;
 
 public class Dragon implements Comparable<Dragon> {
@@ -134,11 +135,7 @@ public class Dragon implements Comparable<Dragon> {
 
     @Override
     public int compareTo(Dragon o) {
-        int result = age - o.age;
-        if (result == 0) {
-            return name.compareTo(o.name);
-        }
-        return 0;
+        return Comparator.comparing(Dragon::getAge).thenComparing(Dragon::getName).thenComparing(Dragon::getWingspan).compare(this, o);
     }
 
     @Override
