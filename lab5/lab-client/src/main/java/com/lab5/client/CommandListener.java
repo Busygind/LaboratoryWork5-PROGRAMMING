@@ -69,10 +69,14 @@ public class CommandListener {
     private void add(String dragonName, String age, String wingspan) {
         String name = dragonName.substring(0, 1).toUpperCase() + dragonName.substring(1); //Делаем имя с большой буквы
         Dragon dragon = new Dragon();
-        //TODO решить как проверять примитивы
+        try {
+            dragon.setAge(Integer.parseInt(age));
+            dragon.setWingspan(Integer.parseInt(wingspan));
+        } catch (NumberFormatException e) {
+            System.out.println("Аргументы имеют неверный формат");
+            return;
+        }
         dragon.setName(name);
-        dragon.setAge(Integer.parseInt(age));
-        dragon.setWingspan(Integer.parseInt(wingspan));
         dragon.setCoordinates(argumentsListener.inputCoordinates());
         argumentsListener.inputColor(dragon);
         argumentsListener.inputCharacter(dragon);
@@ -227,7 +231,6 @@ public class CommandListener {
             desc = "Вывести драконов коллекции от младшего к старшему",
             aliases = {})
     private void printAscending() {
-        //TODO РЕАЛИЗОВАТЬ
         List<Dragon> dragons = new ArrayList<>(collection.getDragons());
         Collections.sort(dragons);
         System.out.println(dragons);
@@ -239,7 +242,6 @@ public class CommandListener {
             desc = "Вывести драконов коллекции от старшего к младшему",
             aliases = {})
     private void printDescending() {
-        //TODO РЕАЛИЗОВАТЬ
         List<Dragon> dragons = new ArrayList<>(collection.getDragons());
         dragons.sort(Collections.reverseOrder());
         System.out.println(dragons);
