@@ -17,6 +17,11 @@ public class CollectionOfDragons {
         creationDate = new Date();
     }
 
+    public CollectionOfDragons() {
+        dragons = new HashSet<>();
+        creationDate = new Date();
+    }
+
     /**
      * @param dragon дракон, которого нужно добавить в коллекцию
      */
@@ -68,5 +73,9 @@ public class CollectionOfDragons {
      */
     public FileOutputStream getFile() {
         return outFile;
+    }
+
+    public void setOutFile(FileOutputStream outFile) {
+        this.outFile = outFile;
     }
 }
