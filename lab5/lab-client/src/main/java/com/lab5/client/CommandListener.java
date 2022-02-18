@@ -136,7 +136,7 @@ public class CommandListener {
     private void save() throws IOException {
         XMLParser writer = new XMLParser();
         writer.write(collection.getFile(), collection);
-        System.out.println("Дракон успешно сохранен в коллекцию");
+        System.out.println("Коллекция успешно сохранена");
     }
 
     @Command(name = "execute_script",
@@ -153,7 +153,12 @@ public class CommandListener {
             countOfArgs = 0,
             desc = "Выход из программы без сохранения",
             aliases = {})
-    private void exit() {
+    private void exit() throws IOException {
+        System.out.println("Сохранить коллекцию в файл? y/n");
+        Scanner sc = new Scanner(System.in);
+        if (sc.nextLine().equals("y")) {
+            save();
+        }
         System.exit(0);
     }
 
