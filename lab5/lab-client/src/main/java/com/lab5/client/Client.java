@@ -28,15 +28,16 @@ public final class Client {
 //            System.exit(0);
 //        }
         XMLParser parser = new XMLParser();
-        File inputFile = new File("C:\\Users\\Дмитрий\\JavaProjects\\LaboratoryWork5\\lab5\\lab-client\\src\\main\\Dragons.xml");
-        FileOutputStream outputFile = new FileOutputStream("C:\\Users\\Дмитрий\\JavaProjects\\LaboratoryWork5\\lab5\\lab-client\\src\\main\\Dragons1.xml");
-        CollectionOfDragons collection = new CollectionOfDragons(outputFile);
-        for (Dragon elem : parser.read(new FileInputStream(inputFile))) {
+        File file = new File("C:\\Users\\Дмитрий\\JavaProjects\\LaboratoryWork5\\lab5\\lab-client\\src\\main\\Dragons.xml");
+
+        CollectionOfDragons collection = new CollectionOfDragons();
+        for (Dragon elem : parser.read(new FileInputStream(file))) {
             collection.addDragon(elem);
             if (elem.getCreationDate() == null) {
                 elem.setCreationDate();
             }
         }
+        collection.setOutFile(new FileOutputStream(file));
         CommandListener cl = new CommandListener(collection);
         cl.commandsReader();
     }
