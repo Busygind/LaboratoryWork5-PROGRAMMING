@@ -2,19 +2,18 @@
 <set>
   <dragon>
     <id>1</id>
-    <name>Dimas</name>
+    <name>Fool</name>
     <coordinates>
-      <x>1</x>
-      <y>1.0</y>
+      <x>321</x>
+      <y>543.0</y>
     </coordinates>
-    <creationDate>2022-02-11 12:49:52.514 UTC</creationDate>
-    <age>19</age>
-    <wingspan>187</wingspan>
-    <color>YELLOW</color>
-    <character>CHAOTIC_EVIL</character>
+    <creationDate>2022-02-19 20:30:23.330 UTC</creationDate>
+    <age>43</age>
+    <wingspan>4354</wingspan>
+    <character>WISE</character>
     <cave>
-      <depth>17.1</depth>
-      <numberOfTreasures>2</numberOfTreasures>
+      <depth>432.0</depth>
+      <numberOfTreasures>654</numberOfTreasures>
     </cave>
   </dragon>
   <dragon>
@@ -36,6 +35,23 @@
   </dragon>
   <dragon>
     <id>3</id>
+    <name>Dimas</name>
+    <coordinates>
+      <x>1</x>
+      <y>1.0</y>
+    </coordinates>
+    <creationDate>2022-02-11 12:49:52.514 UTC</creationDate>
+    <age>19</age>
+    <wingspan>187</wingspan>
+    <color>YELLOW</color>
+    <character>CHAOTIC_EVIL</character>
+    <cave>
+      <depth>17.1</depth>
+      <numberOfTreasures>2</numberOfTreasures>
+    </cave>
+  </dragon>
+  <dragon>
+    <id>4</id>
     <name>Serega</name>
     <coordinates>
       <x>0</x>
