@@ -1,5 +1,8 @@
 package com.lab5.client;
 
+import com.lab5.client.handlers.XMLParser;
+import com.lab5.client.handlers.XMLReader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,29 +18,20 @@ public final class Client {
     }
 
     // TODO сделать javadoc
-
-    /**
-     * @throws IOException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     */
     public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
-        //TODO реализация проверки количества аргументов
-//        if (args.length == 0) {
-//            System.out.println("Неверное количество аргументов, попробуйте еще раз. Необходимый элемент: файл с расширением .xml");
-//            System.exit(0);
-//        }
-        XMLParser parser = new XMLParser();
+//        String fileName = args[0];
+//        File starting = new File(System.getProperty("user.dir")); // Get current user directory
+//        File file = new File(starting, fileName); // Initialize file from cmd
         File file = new File("C:\\Users\\Дмитрий\\JavaProjects\\LaboratoryWork5\\lab5\\lab-client\\src\\main\\Dragons.xml");
-
-        CollectionOfDragons collection = new CollectionOfDragons();
-        for (Dragon elem : parser.read(new FileInputStream(file))) {
+        XMLReader reader = new XMLReader(); // Initialize parser
+        CollectionOfDragons collection = new CollectionOfDragons(); // Initialize collection
+        for (Dragon elem : reader.read(file)) {
             collection.addDragon(elem);
             if (elem.getCreationDate() == null) {
                 elem.setCreationDate();
             }
         }
-        collection.setOutFile(new FileOutputStream(file));
+        collection.setOutFile(file);
         CommandListener cl = new CommandListener(collection);
         cl.commandsReader();
     }
