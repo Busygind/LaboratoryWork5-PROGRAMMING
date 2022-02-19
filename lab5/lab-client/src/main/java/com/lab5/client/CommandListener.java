@@ -1,9 +1,19 @@
 package com.lab5.client;
 
+import com.lab5.client.handlers.XMLParser;
+import com.lab5.client.handlers.XMLWriter;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 
 /**
  * @author Dmitry Busygin
@@ -134,8 +144,8 @@ public class CommandListener {
             desc = "Сохранение коллекции в файл",
             aliases = {})
     private void save() throws IOException {
-        XMLParser writer = new XMLParser();
-        writer.write(collection.getFile(), collection);
+        XMLWriter writer = new XMLWriter();
+        writer.write(collection.getOutFile(), collection);
         System.out.println("Коллекция успешно сохранена");
     }
 
@@ -206,9 +216,9 @@ public class CommandListener {
             desc = "Вывести последние 11 команд (без их аргументов)",
             aliases = {})
     private void showHistory() {
-        final int COUNT_OF_WATCHABLE_COMMANDS = 11;
-        if (commandHistory.size() > COUNT_OF_WATCHABLE_COMMANDS) {
-            System.out.println(commandHistory.subList(commandHistory.size() - COUNT_OF_WATCHABLE_COMMANDS, commandHistory.size()));
+        final int countOfWatchableCommands = 11;
+        if (commandHistory.size() > countOfWatchableCommands) {
+            System.out.println(commandHistory.subList(commandHistory.size() - countOfWatchableCommands, commandHistory.size()));
         }
         System.out.println(commandHistory);
     }
@@ -219,11 +229,11 @@ public class CommandListener {
             desc = "Вывести любого дракона из коллекции, глубина пещеры которого является максимальной",
             aliases = {})
     private void showMaxByCave() {
-        double MAX_DEPTH = Double.MIN_VALUE;
+        double maxDepth = Double.MIN_VALUE;
         Dragon dragonWithDeepestCave = new Dragon();
         for (Dragon dragon : collection.getDragons()) {
-            if (dragon.getCave().getDepth() > MAX_DEPTH) {
-                MAX_DEPTH = dragon.getCave().getDepth();
+            if (dragon.getCave().getDepth() > maxDepth) {
+                maxDepth = dragon.getCave().getDepth();
                 dragonWithDeepestCave = dragon;
             }
         }
