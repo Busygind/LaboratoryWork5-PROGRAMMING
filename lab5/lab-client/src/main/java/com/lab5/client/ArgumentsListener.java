@@ -3,6 +3,10 @@ package com.lab5.client;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Класс, отвечающий за работу с пользователем во время
+ * ввода данных о новом элементе коллекции
+ */
 public class ArgumentsListener {
 
     public ArgumentsListener() {
@@ -10,6 +14,8 @@ public class ArgumentsListener {
     }
 
     /**
+     * Метод обработки и инициализации данных примитивных типов для переданного
+     * в аргументе дракона
      * @param dragon дракон, характеристики примитивных типов которого вводит пользователь
      */
     protected void inputPrimitives(Dragon dragon) {
@@ -26,6 +32,8 @@ public class ArgumentsListener {
     }
 
     /**
+     * Метод обработки и инициализации координат (не устанавливает данные
+     * в поля объекта коллекции)
      * @return объект координат, данные которых ввёл пользователь
      */
     protected Coordinates inputCoordinates() {
@@ -37,6 +45,7 @@ public class ArgumentsListener {
     }
 
     /**
+     * Метод обработки и инициализации координаты Х и присваивание объекту координат
      * @param coordinates объект координат, х которых вводит пользователь
      */
     private void inputX(Coordinates coordinates) {
