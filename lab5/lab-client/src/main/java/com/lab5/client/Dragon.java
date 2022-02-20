@@ -2,6 +2,7 @@ package com.lab5.client;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 
 public class Dragon implements Comparable<Dragon> {
 
@@ -136,6 +137,11 @@ public class Dragon implements Comparable<Dragon> {
     @Override
     public int compareTo(Dragon o) {
         return Comparator.comparing(Dragon::getAge).thenComparing(Dragon::getName).thenComparing(Dragon::getWingspan).compare(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, coordinates, cave, color, character, age, wingspan, creationDate);
     }
 
     @Override
