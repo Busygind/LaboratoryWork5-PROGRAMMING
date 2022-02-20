@@ -1,11 +1,9 @@
 package com.lab5.client;
 
-import com.lab5.client.handlers.XMLParser;
+import com.lab5.client.handlers.CommandListener;
 import com.lab5.client.handlers.XMLReader;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
