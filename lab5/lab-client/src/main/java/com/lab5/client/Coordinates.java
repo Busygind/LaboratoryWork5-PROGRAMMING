@@ -14,15 +14,6 @@ public class Coordinates {
 
     }
 
-    //TODO создание экземпляра координат, если понадобится снова приватный конструктор
-//    public static Coordinates createInstance(Integer x, float y) {
-//        if (x <= MAX_X_VALUE) {
-//            return new Coordinates(x, y);
-//        }
-//        System.out.println("Координата x некорректна, не удалось инициализировать координаты");
-//        return null;
-//    }
-
     public Integer getX() {
         return this.x;
     }
@@ -40,6 +31,9 @@ public class Coordinates {
     }
 
     public void setY(float y) {
+        if (y == Float.NEGATIVE_INFINITY | y == Float.POSITIVE_INFINITY) {
+            throw new IllegalArgumentException("Слишком большое значение, попробуйте снова");
+        }
         this.y = y;
     }
 
