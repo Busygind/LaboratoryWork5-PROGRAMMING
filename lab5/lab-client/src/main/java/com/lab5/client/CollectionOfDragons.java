@@ -10,11 +10,22 @@ import java.util.HashSet;
  * связанные с коллекцией.
  */
 public class CollectionOfDragons {
-
+    /**
+     * Статичное поле, отвечающее за инкрементацию ID для исключения повторений
+     */
     private static int idCounter = 1;
+    /**
+     * Дата создания коллекции
+     */
+    private final Date creationDate;
+    /**
+     * Файл, в который будет производиться запись коллекции при сохранении
+     */
     private File outFile;
+    /**
+     * Сет объектов класса Dragon, текущее содержимое коллекции
+     */
     private HashSet<Dragon> dragons;
-    private Date creationDate;
 
     public CollectionOfDragons() {
         dragons = new HashSet<>();
@@ -28,6 +39,8 @@ public class CollectionOfDragons {
     }
 
     /**
+     * Метод, возвращающий текущую коллекцию драконов в формате HashSet
+     *
      * @return HashSet драконов, находящихся в коллекции
      */
     public HashSet<Dragon> getDragons() {
@@ -35,6 +48,8 @@ public class CollectionOfDragons {
     }
 
     /**
+     * Метод, возвращающий дату создания коллекции
+     *
      * @return дата создания коллекции
      */
     public Date getCreationDate() {
@@ -42,12 +57,19 @@ public class CollectionOfDragons {
     }
 
     /**
+     * Метод, возвращающий текущий файл, в который будет производиться запись коллекции при сохранении
+     *
      * @return файл, в который производится запись готовой коллекции
      */
     public File getOutFile() {
         return outFile;
     }
 
+    /**
+     * Метод, устанавливающий файл, в который будет производиться запись коллекции при сохранении
+     *
+     * @param outFile файл, в который будет производиться запись коллекции
+     */
     public void setOutFile(File outFile) {
         this.outFile = outFile;
     }
