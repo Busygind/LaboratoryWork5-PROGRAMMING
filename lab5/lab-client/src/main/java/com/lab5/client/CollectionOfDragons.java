@@ -1,7 +1,6 @@
 package com.lab5.client;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -55,6 +54,7 @@ public class CollectionOfDragons {
 
     /**
      * Метод, добавляющий полученного дракона в коллекцию
+     *
      * @param dragon дракон, которого нужно добавить в коллекцию
      */
     public void addDragon(Dragon dragon) {
@@ -64,13 +64,16 @@ public class CollectionOfDragons {
         System.out.println("Дракон успешно добавлен в коллекцию");
     }
 
+    /**
+     * Метод, очищающий текущую коллекцию
+     */
     public void clear() {
         dragons.clear();
     }
 
     /**
-     * Метод, удаляющий дракона из коллекции по полученному ID,
-     * если таковой существует
+     * Метод, удаляющий дракона из коллекции по полученному ID, если таковой существует
+     *
      * @param id id дракона, которого нужно удалить
      */
     public void removeById(long id) {
