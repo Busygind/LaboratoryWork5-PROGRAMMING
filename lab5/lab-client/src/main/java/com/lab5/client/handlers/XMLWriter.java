@@ -8,8 +8,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Класс, отвечающий за сохранение текущей коллекции в xml-файл
+ */
 public class XMLWriter {
 
+    /**
+     * Метод, сохраняющий данные в формате xml, ИСПОЛЬЗУЕТСЯ СТОРОННЯЯ БИБЛИОТЕКА XStream
+     *
+     * @param file файл, в который производится запись
+     * @param dragons коллекция, которую необходимо сохранить
+     */
     public void write(File file, CollectionOfDragons dragons) throws IOException {
         XStream xStream = new XStream();
         xStream.alias("dragon", Dragon.class);
