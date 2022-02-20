@@ -11,8 +11,17 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Scanner;
 
+/**
+ * Класс, отвечающий за стартовую обработку xml-файла с данными о коллекции
+ */
 public class XMLReader {
 
+    /**
+     * Метод, преобразующий xml-файл в коллекцию драконов
+     *
+     * @param file файл, из которого происходит считывание
+     * @return заполненная коллекцию HashSet
+     */
     public HashSet<Dragon> read(File file) throws IOException {
         XStream xStream = new XStream();
         xStream.addPermission(AnyTypePermission.ANY);
