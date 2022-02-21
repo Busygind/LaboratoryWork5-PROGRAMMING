@@ -1,7 +1,7 @@
 package com.lab5.client.handlers;
 
-import com.lab5.client.CollectionOfDragons;
-import com.lab5.client.Dragon;
+import com.lab5.client.entities.CollectionOfDragons;
+import com.lab5.client.entities.Dragon;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -24,9 +23,23 @@ import java.util.Collections;
  * @author Dmitry Busygin
  */
 public class CommandListener {
+
+    /**
+     * Словарь, сопоставляющий доступные команды с соответствующими методами
+     */
     private static Map<String, Method> commands = new HashMap<>();
+    /**
+     * Список, сохраняющий данные о последних командах пользователя
+     */
     private static List<String> commandHistory = new ArrayList<>();
+    /**
+     * Объект класса, управляющего считыванием примитивов во время заполнения
+     * полей нового элемента коллекции
+     */
     private ArgumentsListener argumentsListener = new ArgumentsListener();
+    /**
+     * Объект коллекции, с полем dragons которого производятся действия
+     */
     private CollectionOfDragons collection;
 
     public CommandListener(CollectionOfDragons collection) {
@@ -166,7 +179,7 @@ public class CommandListener {
             System.out.println(file.getPath());
             Scanner sc = new Scanner(file);
             while (sc.hasNext()) {
-                String[] line = sc.nextLine().split(" ");
+                ArrayList<String> line = LineSplitter.smartSplit(sc.nextLine());
                 invokeMethod(getCommandName(line), getCommandArguments(line));
             }
         } catch (FileNotFoundException e) {
@@ -279,66 +292,69 @@ public class CommandListener {
     }
 
     /**
-     * Метод циклически считывает команды из консоли и вызывает необходимые методы обработки коллекции
+     * Метод, циклически считывающий команды из консоли и вызывающий необходимые методы обработки коллекции
      */
     public void commandsReader() {
         while (true) { // цикл завершится только при вызове команды exit
-            String[] line = readCommandFromSystemIn();
+            ArrayList<String> line = readCommandFromSystemIn();
             invokeMethod(getCommandName(line), getCommandArguments(line));
         }
     }
 
     /**
-     * Метод вызывает необходимую команду по ее имени и аргументам
+     * Метод, вызывающий необходимую команду по ее имени и аргументам
      *
      * @param commandName название вызываемой команды
      * @param commandArgs аргументы вызываемой команды
      */
-    protected void invokeMethod(String commandName, String[] commandArgs) {
+    protected void invokeMethod(String commandName, ArrayList<String> commandArgs) {
         Method method = commands.get(commandName);
         commandHistory.add(commandName);
         try {
             Command command = method.getAnnotation(Command.class);
-            if (commandArgs.length != command.countOfArgs()) {
+            if (commandArgs.size() != command.countOfArgs()) {
                 System.out.println("Неверное количество аргументов. Необходимо: " + command.countOfArgs());
             } else {
-                method.invoke(this, commandArgs);
+                method.invoke(this, commandArgs.toArray());
             }
         } catch (NullPointerException e) {
             System.out.println("Команда не введена, попробуйте еще раз");
-        } catch (IllegalAccessException | InvocationTargetException e) {
+        } catch (IllegalAccessException e) {
             System.out.println("Такой команды не существует. Чтобы посмотреть список доступных команд, напишите help");
+        } catch (InvocationTargetException e) {
+            System.out.println("Имя не может быть пустым, попробуйте снова");
         }
     }
 
     /**
-     * Метод считывает команду из консоли и разделяет ее на имя и аргументы
+     * Метод, считывающий команду из консоли и разделяющий ее на имя и аргументы
      *
      * @return разделенная строка с составляющими частями команды
      */
-    protected static String[] readCommandFromSystemIn() {
+    protected static ArrayList<String> readCommandFromSystemIn() {
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine().toLowerCase();
-        return line.split(" ");
+        return LineSplitter.smartSplit(line);
     }
 
     /**
-     * Метод извлечения из полученной строки данных, которые являются аргументами
+     * Метод, извлекающий из полученного массива строк данные, которые являются аргументами
      *
      * @param line разделенная строка
      * @return массив аргументов
      */
-    protected static String[] getCommandArguments(String[] line) {
-        return Arrays.copyOfRange(line, 1, line.length);
+    protected static ArrayList<String> getCommandArguments(ArrayList<String> line) {
+        line.remove(0);
+        return line;
     }
 
     /**
-     * Метод извлечения из полученной строки имени команды
+     * Метод, извлекающий из полученного массива строк имя команды
      *
      * @param line разделенная строка
      * @return имя команды
      */
-    protected static String getCommandName(String[] line) {
-        return line[0];
+    protected static String getCommandName(ArrayList<String> line) {
+        return line.get(0);
     }
 }
