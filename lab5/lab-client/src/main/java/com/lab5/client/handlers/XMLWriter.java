@@ -1,7 +1,7 @@
 package com.lab5.client.handlers;
 
-import com.lab5.client.CollectionOfDragons;
-import com.lab5.client.Dragon;
+import com.lab5.client.entities.CollectionOfDragons;
+import com.lab5.client.entities.Dragon;
 import com.thoughtworks.xstream.XStream;
 
 import java.io.File;
@@ -18,6 +18,7 @@ public class XMLWriter {
      *
      * @param file файл, в который производится запись
      * @param dragons коллекция, которую необходимо сохранить
+     * @throws IOException возникает при невозможности записи в файл полученных данных
      */
     public void write(File file, CollectionOfDragons dragons) throws IOException {
         XStream xStream = new XStream();
