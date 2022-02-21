@@ -1,11 +1,11 @@
 package com.lab5.client.handlers;
 
 
-import com.lab5.client.Coordinates;
-import com.lab5.client.Dragon;
-import com.lab5.client.DragonCave;
-import com.lab5.client.DragonCharacter;
-import com.lab5.client.Color;
+import com.lab5.client.entities.Coordinates;
+import com.lab5.client.entities.Dragon;
+import com.lab5.client.entities.DragonCave;
+import com.lab5.client.enums.DragonCharacter;
+import com.lab5.client.enums.Color;
 
 import java.util.Arrays;
 import java.util.Scanner;
