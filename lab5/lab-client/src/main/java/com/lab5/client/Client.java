@@ -1,5 +1,7 @@
 package com.lab5.client;
 
+import com.lab5.client.entities.CollectionOfDragons;
+import com.lab5.client.entities.Dragon;
 import com.lab5.client.handlers.CommandListener;
 import com.lab5.client.handlers.XMLReader;
 
@@ -16,7 +18,16 @@ public final class Client {
     }
 
     // TODO сделать javadoc
-    public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
+
+    /**
+     * Старт программы. Инициализация входного файла с содержимым коллекции, создание парсера и занесение
+     * первоначальных данных в коллекцию для дальнейшей работы
+     *
+     * @param args аргументы, переданные вместе с запуском программы (в случае данного проекта необходимо передать
+     *              единственную строку с названием файла, содержащего данные о коллекции)
+     * @throws IOException возникает при ошибке работы с файлом или его отсутствием в текущей директории
+     */
+    public static void main(String[] args) throws IOException {
 //        String fileName = args[0];
 //        File starting = new File(System.getProperty("user.dir")); // Get current user directory
 //        File file = new File(starting, fileName); // Initialize file from cmd
