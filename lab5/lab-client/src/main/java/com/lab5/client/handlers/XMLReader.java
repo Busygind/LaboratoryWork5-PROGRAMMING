@@ -1,7 +1,7 @@
 package com.lab5.client.handlers;
 
-import com.lab5.client.CollectionOfDragons;
-import com.lab5.client.Dragon;
+import com.lab5.client.entities.CollectionOfDragons;
+import com.lab5.client.entities.Dragon;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
@@ -21,6 +21,7 @@ public class XMLReader {
      *
      * @param file файл, из которого происходит считывание
      * @return заполненная коллекцию HashSet
+     * @throws IOException возникает при некорректных данных в файле или их неправильной интерпретации
      */
     public HashSet<Dragon> read(File file) throws IOException {
         XStream xStream = new XStream();
